@@ -1,0 +1,13 @@
+Machine Learning Overview
+
+Machine learning is a subset of artificial intelligence that enables computers to learn from data without being explicitly programmed. There are three main types of machine learning:
+
+1. Supervised Learning: The algorithm learns from labeled training data. The input data is paired with the correct output, and the algorithm learns to map inputs to outputs. Examples include classification and regression problems.
+
+2. Unsupervised Learning: The algorithm finds patterns in unlabeled data. The system tries to learn the underlying structure from the data without any specific labels. Examples include clustering and dimensionality reduction.
+
+3. Reinforcement Learning: The algorithm learns through trial and error by interacting with an environment. It receives rewards or penalties based on its actions and learns to maximize cumulative reward.
+
+Deep learning is a specialized form of machine learning that uses neural networks with multiple layers (hence "deep"). It has revolutionized computer vision, natural language processing, and speech recognition. Deep learning models can automatically learn hierarchical representations of data, making them particularly effective for complex tasks like image recognition, machine translation, and game playing.
+
+Natural Language Processing (NLP) is a branch of AI that focuses on the interaction between computers and humans through natural language. Modern NLP uses deep learning techniques like transformers and attention mechanisms to achieve state-of-the-art results in tasks such as sentiment analysis, named entity recognition, and question answering.
