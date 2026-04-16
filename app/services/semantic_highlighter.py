@@ -7,6 +7,10 @@ from loguru import logger
 from transformers import AutoModel
 
 from app.config import get_settings
+from app.utils.compat_patches import apply_all_patches
+
+# Apply transformers compatibility patches before any model is loaded
+apply_all_patches()
 
 
 class SemanticHighlighter:

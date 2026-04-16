@@ -3,7 +3,7 @@ name = "semantic-hhem-rag"
 version = "1.0.0"
 description = "Minimal RAG implementation demonstrating cost savings and quality improvements with Semantic Highlighting and HHEM validation"
 readme = "README.md"
-requires-python = ">=3.12"
+requires-python = ">=3.12,<3.14"
 license = {text = "MIT"}
 authors = [
     {name = "Developer"}
@@ -18,51 +18,61 @@ classifiers = [
 
 dependencies = [
     # Core Framework
-    "fastapi==0.115.5",
-    "uvicorn[standard]==0.32.1",
-    "python-multipart==0.0.18",
-    
+    "fastapi>=0.115.5",
+    "uvicorn[standard]>=0.34.0",
+    "python-multipart>=0.0.18",
+
     # LLM & Embeddings
-    "openai==1.57.2",
-    "tiktoken==0.8.0",
-    
+    "openai>=1.57.2",
+    "tiktoken>=0.9.0",
+
     # LangChain (Document Loading & Processing)
-    "langchain==0.3.13",
-    "langchain-openai==0.2.12",
-    "langchain-community==0.3.13",
-    "langchain-text-splitters==0.3.4",
-    
+    "langchain>=0.3.13",
+    "langchain-openai>=0.2.12",
+    "langchain-community>=0.3.13",
+    "langchain-text-splitters>=0.3.4",
+
     # Vector Store
-    "qdrant-client==1.12.1",
-    
+    "qdrant-client>=1.17.0",
+
     # ML Models
-    "transformers==4.47.1",
-    "torch==2.5.1",
-    "sentencepiece==0.2.0",
-    
+    # torch>=2.6.0 is required — 2.5.1 has no macOS ARM64 (macosx_*_arm64) wheel
+    # No upper bound on transformers — compatibility patch in semantic_highlighter.py
+    # handles build_inputs_with_special_tokens for the Zilliz model remote code.
+    "transformers>=4.44.0",
+    "torch>=2.6.0",
+    "sentencepiece>=0.2.0",
+    "nltk>=3.9.0",              # required by zilliz/semantic-highlight-bilingual-v1
+
     # Document Parsing
-    "pypdf==5.1.0",
-    "python-magic==0.4.27",
-    "unstructured==0.16.14",
-    
+    "pypdf>=5.1.0",
+    "python-magic>=0.4.27",
+    "unstructured>=0.16.14",
+
     # Utilities
-    "pydantic==2.10.3",
-    "pydantic-settings==2.6.1",
-    "python-dotenv==1.0.1",
-    "aiofiles==24.1.0",
-    
+    "pydantic>=2.10.3",
+    "pydantic-settings>=2.8.0",
+    "python-dotenv>=1.0.1",
+    "aiofiles>=24.1.0",
+
     # Monitoring & Logging
-    "loguru==0.7.3",
+    "loguru>=0.7.3",
 ]
 
 [project.optional-dependencies]
 dev = [
-    "pytest==8.3.4",
-    "pytest-asyncio==0.24.0",
-    "httpx==0.28.1",
-    "black==24.10.0",
-    "ruff==0.8.4",
-    "mypy==1.13.0",
+    "pytest>=8.4.0",
+    "pytest-asyncio>=0.25.0",
+    "httpx>=0.28.0",
+    "black>=24.10.0",
+    "ruff>=0.11.0",
+    "mypy>=1.15.0",
+]
+notebook = [
+    "jupyter>=1.1.0",
+    "matplotlib>=3.10.0",
+    "seaborn>=0.13.2",
+    "numpy>=2.2.0",
 ]
 
 [project.scripts]
@@ -72,8 +82,11 @@ semantic-hhem-rag = "app.main:main"
 requires = ["hatchling"]
 build-backend = "hatchling.build"
 
+[tool.hatch.build.targets.wheel]
+packages = ["app"]
+
 [tool.uv]
-python-preference = "only-system"
+python-preference = "managed"
 
 [tool.black]
 line-length = 100

@@ -45,12 +45,14 @@ semantic-hhem-rag/
 │   └── utils/
 │       ├── __init__.py
 │       └── metrics.py          # Metrics tracking
+├── notebooks/
+│   └── rag_showcase.ipynb      # Interactive tutorial (semantic highlighting + HHEM)
 ├── uploads/                     # Temporary file storage
 ├── data/                       # Qdrant data persistence
 ├── tests/
 │   ├── __init__.py
 │   └── test_api.py
-├── pyproject.toml              # UV package management
+├── pyproject.toml              # uv package management
 ├── .env.example                # Environment template
 ├── docker-compose.yml          # Docker compose config
 └── README.md
@@ -70,10 +72,10 @@ semantic-hhem-rag/
 # Clone the repository
 cd semantic-hhem-rag
 
-# Create virtual environment and install dependencies
-uv venv
+# Create virtual environment (Python 3.12) and install dependencies
+uv venv --python 3.12
 source .venv/bin/activate  # Windows: .venv\Scripts\activate
-uv pip install -e ".[dev]"
+uv pip install -e ".[dev,notebook]"
 ```
 
 ### 2. Configure Environment
@@ -110,6 +112,44 @@ The API will be available at `http://localhost:8000`
 
 - API Docs: `http://localhost:8000/docs`
 - Health Check: `http://localhost:8000/health`
+
+## 📓 Jupyter Notebook — Interactive Tutorial
+
+`notebooks/rag_showcase.ipynb` is a self-contained educational notebook that demonstrates both optimisations side-by-side with live code, visualisations, and student exercises.
+
+### What the notebook covers
+
+| Section | Topic |
+|---|---|
+| 1 | Setup — install dependencies, load models |
+| 2 | Sample corpus — climate facts mixed with irrelevant noise |
+| 3 | **Part 1: Semantic Highlighting** — before/after comparison, relevance score charts, threshold trade-off |
+| 4 | **Part 2: HHEM Hallucination Detection** — faithful vs hallucinated answers, gauge charts, threshold sensitivity |
+| 5 | Combined summary — token/cost comparison across all three modes |
+| 6 | End-to-end pipeline (optional, requires Qdrant + OpenAI key) |
+| 7 | Student exercises (Easy → Hard → Bonus) |
+
+### Running the notebook
+
+```bash
+# 1. Create and activate a virtual environment (Python 3.12)
+uv venv --python 3.12
+source .venv/bin/activate          # Windows: .venv\Scripts\activate
+
+# 2. Install all dependencies (including notebook extras)
+uv pip install -e ".[dev,notebook]"
+
+# 3. Copy environment config
+cp .env.example .env
+# Add your OPENAI_API_KEY to .env (only needed for Section 6)
+
+# 4. Launch Jupyter
+jupyter notebook notebooks/rag_showcase.ipynb
+```
+
+> **Note:** The first run downloads two HuggingFace models (~1.2 GB total). Subsequent runs use the local cache and start instantly. Sections 1–5 and all student exercises work **without** an OpenAI key or a running Qdrant instance.
+
+---
 
 ## 📖 API Documentation
 
@@ -179,10 +219,10 @@ curl -X POST "http://localhost:8000/compare" \
 
 ```bash
 # Run the test script
-python tests/test_api.py
+uv run python tests/test_api.py
 
 # Or using pytest
-pytest tests/
+uv run pytest tests/
 ```
 
 ## 📊 Performance Metrics

@@ -61,3 +61,4 @@ htmlcov/
 dmypy.json
 
 semantic-hhem-rag-implementation.md
+.claude/*

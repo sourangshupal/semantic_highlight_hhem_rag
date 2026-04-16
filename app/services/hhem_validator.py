@@ -7,6 +7,10 @@ from loguru import logger
 from transformers import AutoModelForSequenceClassification
 
 from app.config import get_settings
+from app.utils.compat_patches import apply_all_patches, fix_hhem_weight_tying
+
+# Apply transformers compatibility patches before any model is loaded
+apply_all_patches()
 
 
 class HHEMValidator:
@@ -24,6 +28,9 @@ class HHEMValidator:
             self.model = AutoModelForSequenceClassification.from_pretrained(
                 self.settings.hhem_model, trust_remote_code=True
             )
+            # transformers 5.x does not re-apply weight tying for custom remote models,
+            # leaving encoder.embed_tokens.weight as zeros. Patch 3 in compat_patches.
+            fix_hhem_weight_tying(self.model)
             logger.info("✓ HHEM model loaded")
         except Exception as e:
             logger.error(f"Failed to load HHEM model: {e}")
